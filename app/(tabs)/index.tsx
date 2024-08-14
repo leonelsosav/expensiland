@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import { SafeAreaView, StyleSheet } from 'react-native';
-import AccountsSection from '@/components/AccountCard/AccountsSection'; 
-import CategoriesSection from '@/components/CategoryCard/CategoriesSection';
+import React, { useState } from "react";
+import { SafeAreaView, ScrollView, StyleSheet } from "react-native";
+import AccountsSection from "@/components/AccountCard/AccountsSection";
+import CategoriesSection from "@/components/CategoryCard/CategoriesSection";
+import TransactionsSection from "@/components/TransactionCard/TransactionsSection";
 
 export default function MainScreen() {
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
@@ -12,9 +13,11 @@ export default function MainScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <AccountsSection onSelect={handleAccountSelect} />
-      <CategoriesSection selectedAccountIndex={selectedAccountIndex} />
-      {/* Other components like TransactionsPreview will go here */}
+      <ScrollView>
+        <AccountsSection onSelect={handleAccountSelect} />
+        <CategoriesSection selectedAccountIndex={selectedAccountIndex} />
+        <TransactionsSection selectedAccountIndex={selectedAccountIndex} />
+      </ScrollView>
     </SafeAreaView>
   );
 }
@@ -23,7 +26,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingVertical: 10,  // Added padding to avoid cropping
-    backgroundColor: '#F7F8FA',
+    backgroundColor: "white",
   },
 });

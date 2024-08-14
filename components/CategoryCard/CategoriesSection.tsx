@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, ScrollView, StyleSheet } from 'react-native';
+import { View, ScrollView, StyleSheet, Text } from 'react-native';
 import CategoryCard from './CategoryCard'; // Adjust the path as needed
 
 interface CategoriesSectionProps {
@@ -44,6 +44,7 @@ export default function CategoriesSection({ selectedAccountIndex }: CategoriesSe
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Categories</Text>
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {categories.map((category, index) => (
           <CategoryCard key={index} category={category.category} amount={category.amount} />
@@ -56,5 +57,12 @@ export default function CategoriesSection({ selectedAccountIndex }: CategoriesSe
 const styles = StyleSheet.create({
   container: {
     paddingVertical: 20,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 10,
+    marginLeft: 20,
   },
 });

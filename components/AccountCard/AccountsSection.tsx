@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { View, FlatList, StyleSheet, Dimensions } from 'react-native';
+import { View, FlatList, StyleSheet, Dimensions, Text } from 'react-native';
 import AccountCard from './AccountCard'; // Adjust the path as needed
 
 const { width: screenWidth } = Dimensions.get('window');
@@ -47,6 +47,7 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
 
   return (
     <View style={styles.container}>
+      <Text style={styles.header}>Accounts</Text>
       <FlatList
         ref={flatListRef}
         data={accounts}
@@ -92,5 +93,12 @@ const styles = StyleSheet.create({
   },
   contentContainerStyle: {
     paddingHorizontal: (screenWidth - screenWidth * 0.75) / 2,
+  },
+  header: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#333',
+    marginBottom: 20,
+    marginLeft: 20,
   },
 });
