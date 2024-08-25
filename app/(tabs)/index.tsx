@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { SafeAreaView, ScrollView, StyleSheet, Text } from "react-native";
 import AccountsSection from "@/components/HomeScreen/AccountCard/AccountsSection";
 import CategoriesSection from "@/components/HomeScreen/CategoryCard/CategoriesSection";
-import TransactionsSection from "@/components/HomeScreen/TransactionCard/TransactionsSection";
+import TransactionsSection from "@/components/HomeScreen/TransactionCard/TransactionsSection"; 
 
 export default function MainScreen() {
   const [selectedAccountIndex, setSelectedAccountIndex] = useState(0);
@@ -31,9 +31,9 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 20,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });
