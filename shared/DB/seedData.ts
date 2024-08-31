@@ -159,6 +159,4 @@ export const populateTables = async (db: any) => {
       )
     ),
   ]);
-
-  console.log("Tables populated with sample data.");
 };

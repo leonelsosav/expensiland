@@ -1,48 +1,66 @@
-import React, { useRef, useState } from 'react';
-import { View, FlatList, StyleSheet, Dimensions, Text } from 'react-native';
-import AccountCard from './AccountCard'; // Adjust the path as needed
+import React, { useEffect, useRef, useState } from "react";
+import { View, FlatList, StyleSheet, Dimensions, Text } from "react-native";
+import AccountCard from "./AccountCard";
+import { getDBConnection, getItems } from "@/shared/db-service";
+import { Account } from "@/shared/models/models";
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get("window");
 
 interface AccountsSectionProps {
-  onSelect: (index: number) => void; // Handle account selection
+  onSelect: (index: number) => void;
 }
 
 export default function AccountsSection({ onSelect }: AccountsSectionProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const flatListRef = useRef<FlatList>(null);
+  const [accounts, setAccounts] = useState<Account[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    const fetchAccounts = async () => {
+      try {
+        const db = await getDBConnection();
+        const accountsData = await getItems<Account>(db, "accounts");
+        setAccounts(accountsData);
+      } catch (err) {
+        console.error("Failed to fetch accounts:", err);
+        setError("Failed to fetch accounts");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchAccounts();
+  }, []);
+
+  if (loading) return <Text>Loading accounts...</Text>;
+  if (error) return <Text>{error}</Text>;
 
   const colorPairs = [
-    ['#333', '#FF6F61'],  // Original red accent
-    ['#333', '#FFB400'],  // Orange
-    ['#333', '#8A2BE2'],  // BlueViolet
-    ['#333', '#1E90FF'],  // DodgerBlue
-    ['#333', '#32CD32'],  // LimeGreen
-    ['#333', '#FF1493'],  // DeepPink
-    ['#333', '#00FA9A'],  // MediumSpringGreen
-    ['#333', '#FFD700'],  // Gold
-    ['#333', '#4B0082'],  // Indigo
-    ['#333', '#DC143C'],  // Crimson
-  ];
-
-  const accounts = [
-    { accountName: 'Personal Checking', category: 'Debit', balance: '$1,230.45' },
-    { accountName: 'Savings Account', category: 'Savings', balance: '$8,920.00' },
-    { accountName: 'Investment Fund', category: 'Investment', balance: '$15,340.00' },
-    { accountName: 'Business Account', category: 'Credit', balance: '$3,245.67' },
+    ["#333", "#FF6F61"],
+    ["#333", "#FFB400"],
+    ["#333", "#8A2BE2"],
+    ["#333", "#1E90FF"],
+    ["#333", "#32CD32"],
+    ["#333", "#FF1493"],
+    ["#333", "#00FA9A"],
+    ["#333", "#FFD700"],
+    ["#333", "#4B0082"],
+    ["#333", "#DC143C"],
   ];
 
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(offsetX / (screenWidth * 0.75 + 20));
     setSelectedIndex(index);
-    onSelect(index);  // Notify the parent of the selected index
+    onSelect(index);
   };
 
   const handleSelectCard = (index: number) => {
     setSelectedIndex(index);
     flatListRef.current?.scrollToIndex({ animated: true, index });
-    onSelect(index);  // Notify the parent of the selected index
+    onSelect(index);
   };
 
   return (
@@ -58,14 +76,19 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
         decelerationRate="fast"
         onMomentumScrollEnd={handleScroll}
         renderItem={({ item, index }) => (
-          <View style={[styles.cardContainer, { opacity: selectedIndex === index ? 1 : 0.5 }]}>
+          <View
+            style={[
+              styles.cardContainer,
+              { opacity: selectedIndex === index ? 1 : 0.5 },
+            ]}
+          >
             <AccountCard
               key={index}
-              accountName={item.accountName}
-              category={item.category}
+              name={item.name}
+              type={item.type}
               balance={item.balance}
               colors={colorPairs[index % colorPairs.length]}
-              onPress={() => handleSelectCard(index)} // Handle card selection
+              onPress={() => handleSelectCard(index)}
             />
           </View>
         )}
@@ -73,7 +96,10 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
         contentContainerStyle={styles.contentContainerStyle}
         onScrollToIndexFailed={(info) => {
           setTimeout(() => {
-            flatListRef.current?.scrollToIndex({ index: info.index, animated: true });
+            flatListRef.current?.scrollToIndex({
+              index: info.index,
+              animated: true,
+            });
           }, 500);
         }}
       />
@@ -87,8 +113,8 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     width: screenWidth * 0.75,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginHorizontal: 10,
   },
   contentContainerStyle: {
@@ -96,8 +122,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
+    fontWeight: "bold",
+    color: "#333",
     marginBottom: 20,
     marginLeft: 20,
   },

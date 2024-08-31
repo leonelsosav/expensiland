@@ -1,18 +1,30 @@
-import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface AccountCardProps {
-  accountName: string;
-  category: string;
+  name: string;
+  type: string;
   balance: string;
   colors: string[];
-  onPress: () => void;  // Add onPress prop for handling taps
+  onPress: () => void; // Add onPress prop for handling taps
 }
 
-const { width: screenWidth } = Dimensions.get('window');
+const { width: screenWidth } = Dimensions.get("window");
 
-export default function AccountCard({ accountName, category, balance, colors, onPress }: AccountCardProps) {
+export default function AccountCard({
+  name,
+  type,
+  balance,
+  colors,
+  onPress,
+}: AccountCardProps) {
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.8}>
       <View style={styles.cardContainer}>
@@ -24,11 +36,11 @@ export default function AccountCard({ accountName, category, balance, colors, on
         >
           <View style={styles.balanceContainer}>
             <Text style={styles.balanceLabel}>Balance</Text>
-            <Text style={styles.balance}>{balance}</Text>
+            <Text style={styles.balance}>${balance.toLocaleString()}</Text>
           </View>
           <View style={styles.cardInfoContainer}>
-            <Text style={styles.accountName}>{accountName}</Text>
-            <Text style={styles.category}>{category}</Text>
+            <Text style={styles.accountName}>{name}</Text>
+            <Text style={styles.category}>{type}</Text>
           </View>
         </LinearGradient>
       </View>
@@ -45,37 +57,37 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 15,
     padding: 20,
-    justifyContent: 'space-between',
-    overflow: 'hidden',
-    shadowColor: '#000',
+    justifyContent: "space-between",
+    overflow: "hidden",
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.5,
     shadowRadius: 5,
     elevation: 8,
   },
   balanceContainer: {
-    alignItems: 'flex-end',
+    alignItems: "flex-end",
   },
   balanceLabel: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 14,
     opacity: 0.8,
   },
   balance: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 24,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   cardInfoContainer: {
     marginTop: 30,
   },
   accountName: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 22,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   category: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 18,
     marginTop: 10,
   },

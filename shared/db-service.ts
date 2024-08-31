@@ -51,12 +51,13 @@ export const insertItem = async (
 };
 
 // READ
-export const getItems = async (
+// Updated getItems function to use generics
+export const getItems = async <T>(
   db: any,
   tableName: string,
   columns: string[] = ["*"],
   whereClause?: string
-) => {
+): Promise<T[]> => {
   try {
     const query = `SELECT ${columns.join(",")} FROM ${tableName} ${
       whereClause ? "WHERE " + whereClause : ""
@@ -66,6 +67,7 @@ export const getItems = async (
     return result;
   } catch (e) {
     console.log(e);
+    return []; // Return an empty array in case of an error to satisfy the return type
   }
 };
 
