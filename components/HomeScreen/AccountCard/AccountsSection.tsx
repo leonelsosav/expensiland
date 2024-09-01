@@ -7,12 +7,13 @@ import { Account } from "@/shared/models/models";
 const { width: screenWidth } = Dimensions.get("window");
 
 interface AccountsSectionProps {
-  onSelect: (index: number) => void;
+  onSelect: (accountId: number) => void;
 }
 
 export default function AccountsSection({ onSelect }: AccountsSectionProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [selectedId, setSelectedId] = useState(1);
   const flatListRef = useRef<FlatList>(null);
+  
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -53,14 +54,14 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
   const handleScroll = (event: any) => {
     const offsetX = event.nativeEvent.contentOffset.x;
     const index = Math.round(offsetX / (screenWidth * 0.75 + 20));
-    setSelectedIndex(index);
-    onSelect(index);
+    setSelectedId(accounts[index].id);
+    onSelect(accounts[index].id);
   };
 
-  const handleSelectCard = (index: number) => {
-    setSelectedIndex(index);
-    flatListRef.current?.scrollToIndex({ animated: true, index });
-    onSelect(index);
+  const handleSelectCard = (AccountId: number) => {
+    setSelectedId(AccountId);
+    flatListRef.current?.scrollToIndex({ animated: true, index: AccountId });
+    onSelect(AccountId);
   };
 
   return (
@@ -79,7 +80,7 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
           <View
             style={[
               styles.cardContainer,
-              { opacity: selectedIndex === index ? 1 : 0.5 },
+              { opacity: selectedId === index ? 1 : 0.5 },
             ]}
           >
             <AccountCard
@@ -88,7 +89,7 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
               type={item.type}
               balance={item.balance}
               colors={colorPairs[index % colorPairs.length]}
-              onPress={() => handleSelectCard(index)}
+              onPress={() => handleSelectCard(item.id)}
             />
           </View>
         )}

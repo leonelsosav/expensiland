@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons';
 
 interface TransactionCardProps {
   title: string;
-  amount: string;
+  amount: number;
   time: string;
 }
 
@@ -32,8 +32,7 @@ export default function TransactionCard({ title, amount, time }: TransactionCard
         <Text style={styles.time}>{time}</Text>
       </View>
       <View style={styles.amountContainer}>
-        <Text style={styles.amount}>{amount}</Text>
-        <Text style={styles.percentage}>-4.5%</Text> 
+        <Text style={styles.amount}>${amount.toLocaleString()}</Text>
       </View>
     </View>
   );
