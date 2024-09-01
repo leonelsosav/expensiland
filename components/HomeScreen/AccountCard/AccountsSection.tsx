@@ -13,7 +13,7 @@ interface AccountsSectionProps {
 export default function AccountsSection({ onSelect }: AccountsSectionProps) {
   const [selectedId, setSelectedId] = useState(1);
   const flatListRef = useRef<FlatList>(null);
-  
+
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -80,7 +80,7 @@ export default function AccountsSection({ onSelect }: AccountsSectionProps) {
           <View
             style={[
               styles.cardContainer,
-              { opacity: selectedId === index ? 1 : 0.5 },
+              { opacity: selectedId === accounts[index].id ? 1 : 0.5 },
             ]}
           >
             <AccountCard

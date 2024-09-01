@@ -36,7 +36,7 @@ export default function TransactionsSection({
           key={index}
           title={transaction.title}
           amount={transaction.amount}
-          time={transaction.date}
+          date={transaction.date}
         />
       ))}
       <Link href="/transactions" style={styles.seeMore}>
